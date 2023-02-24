@@ -12,6 +12,8 @@ import json
 import os
 import pandas as pd
 import flask
+from flask import Flask, jsonify
+from flask import request
 import sqlite3
 import psycopg2
 import psycopg2.extras
@@ -128,7 +130,7 @@ def bag_of_words(s, words):
 
 
 
-app= flask.Flask(__name__)
+app= Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def chat():
@@ -139,7 +141,8 @@ def chat():
     i=0
     #inp = input("You: ")
     model.load("model.tflearn")
-    inp= flask.request.args['arg']
+    arg= str(request.args['arg'])
+    inp=arg
     if inp.lower()=="quit":
       break
     results = model.predict([bag_of_words(inp, words)])
